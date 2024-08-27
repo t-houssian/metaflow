@@ -9,7 +9,6 @@ from types import FunctionType, MethodType
 from typing import Any, Callable, List, Optional, Tuple
 
 from . import cmd_with_io, parameters
-from .datastore.artifacts import MetaflowArtifact
 from .parameters import DelayedEvaluationParameter, Parameter
 from .exception import (
     MetaflowException,
@@ -244,6 +243,9 @@ class FlowSpec(metaclass=_FlowSpecMeta):
         return iter(self._steps)
 
     def __getattr__(self, name: str):
+        # Late import to prevent circular deps
+        from .datastore import MetaflowArtifact
+
         if self._datastore and name in self._datastore:
             # load the attribute from the datastore...
             x = self._datastore[name]

@@ -17,11 +17,9 @@ from ..metadata import DataArtifact, MetaDatum
 from ..parameters import Parameter
 from ..util import Path, is_stringish, to_fileobj
 
-from .artifacts import MetaflowArtifact
-from .artifacts.serializer import ArtifactSerializer, SerializationMetadata
-from .exceptions import DataException, UnpicklableArtifactException
+from .artifacts import ArtifactSerializer, MetaflowArtifact, SerializationMetadata
 
-from metaflow.plugins import ARTIFACT_SERIALIZERS
+from .exceptions import DataException, UnpicklableArtifactException
 
 
 _included_file_type = "<class 'metaflow.includefile.IncludedFile'>"
@@ -107,6 +105,8 @@ class TaskDataStore(object):
         mode="r",
         allow_not_done=False,
     ):
+        # Late import to prevent circular deps
+        from metaflow.plugins import ARTIFACT_SERIALIZERS
 
         self._storage_impl = flow_datastore._storage_impl
         self.TYPE = self._storage_impl.TYPE
