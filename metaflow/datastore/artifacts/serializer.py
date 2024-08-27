@@ -2,7 +2,7 @@ from collections import namedtuple
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 SerializationMetadata = namedtuple(
-    "SerializationMetadata", "type size encode serializer_info"
+    "SerializationMetadata", "type size encoding serializer_info"
 )
 
 

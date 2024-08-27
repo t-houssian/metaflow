@@ -392,13 +392,14 @@ class TaskDataStore(object):
             metadata = SerializationMetadata(
                 type=info.get("type", "object"),
                 size=info.get("size", 0),
-                encode=info.get("encoding", "gzip+pickle-v2"),
+                encoding=info.get("encoding", "gzip+pickle-v2"),
+                serializer_info=info.get("serializer_info", {}),
             )
             # Find a serializer that can deserialize this object
             deser = None
             for s in self._serializers_order:
-                if s.can_deserialize(metadata):
-                    deser = s
+                if self._serializers[s].can_deserialize(metadata):
+                    deser = self._serializers[s]
                     break
             if deser is None:
                 raise DataException(

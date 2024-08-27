@@ -244,7 +244,7 @@ class FlowSpec(metaclass=_FlowSpecMeta):
 
     def __getattr__(self, name: str):
         # Late import to prevent circular deps
-        from .datastore import MetaflowArtifact
+        from .datastore.artifacts import MetaflowArtifact
 
         if self._datastore and name in self._datastore:
             # load the attribute from the datastore...
@@ -264,7 +264,7 @@ class FlowSpec(metaclass=_FlowSpecMeta):
 
     def __setattr__(self, name: str, value: Any):
         # Late import to prevent circular deps
-        from .datastore import MetaflowArtifact
+        from .datastore.artifacts import MetaflowArtifact
 
         if isinstance(value, MetaflowArtifact) and name not in self._orig_artifacts:
             self._orig_artifacts[name] = value
