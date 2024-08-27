@@ -263,6 +263,9 @@ class FlowSpec(metaclass=_FlowSpecMeta):
             raise AttributeError("Flow %s has no attribute '%s'" % (self.name, name))
 
     def __setattr__(self, name: str, value: Any):
+        # Late import to prevent circular deps
+        from .datastore import MetaflowArtifact
+
         if isinstance(value, MetaflowArtifact) and name not in self._orig_artifacts:
             self._orig_artifacts[name] = value
             super().__setattr__(name, value.get_representation())
