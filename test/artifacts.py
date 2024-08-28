@@ -9,7 +9,6 @@ from metaflow.datastore.artifacts.serializer import (
     ArtifactSerializer,
     SerializationMetadata,
     SerializedBlob,
-    register_serializer,
 )
 
 if TYPE_CHECKING:
@@ -146,9 +145,6 @@ class ChunkedList(HookDemoArtifact, ArtifactSerializer):
         )
         c._start_idx = len(c._wrapped)
         return c
-
-
-register_serializer(ChunkedList)
 
 
 class ArtifactsFlow(FlowSpec):

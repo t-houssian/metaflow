@@ -85,7 +85,28 @@ class SerializedBlob:
         return self._compress_method
 
 
-class ArtifactSerializer:
+class SerializerStore(type):
+    _all_serializers = {}
+
+    def __new__(cls, name, bases, class_dict):
+        serializer = super().__new__(cls, name, bases, class_dict)
+        if name != "ArtifactSerializer":  # Don't register the base class
+            if name in cls._all_serializers:
+                raise ValueError(f"Serializer with name {name} already exists")
+            cls._all_serializers[name] = serializer
+        return serializer
+
+    def __getitem__(cls, key):
+        try:
+            return cls._all_serializers[key]
+        except KeyError as e:
+            raise KeyError(f"No serializer with name {key}") from e
+
+    def __iter__(cls):
+        return iter(cls._all_serializers.items())
+
+
+class ArtifactSerializer(metaclass=SerializerStore):
     """
     Represents a de/serializer for artifacts
 
@@ -186,17 +207,3 @@ class ArtifactSerializer:
             The deserialized object
         """
         raise NotImplementedError
-
-
-def register_serializer(serializer: ArtifactSerializer):
-    """
-    Register a new serializer
-
-    Parameters
-    ----------
-    serializer : ArtifactSerializer
-        The serializer to register
-    """
-    from metaflow.plugins import ARTIFACT_SERIALIZERS
-
-    ARTIFACT_SERIALIZERS.append(serializer)

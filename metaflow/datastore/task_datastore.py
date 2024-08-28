@@ -126,6 +126,9 @@ class TaskDataStore(object):
         self._serializers = {
             s.TYPE: s for s in ARTIFACT_SERIALIZERS
         }  # type: Dict[str, ArtifactSerializer]
+
+        self._serializers.update(ArtifactSerializer)
+
         # TODO:
         # This is a hack -- we need a way to specify the order of serializers. A few ideas:
         # Have a few options in an ORDER variable:
