@@ -147,8 +147,9 @@ class TaskDataStore(object):
             self._info = {}
         elif self._mode == "r":
             if data_metadata is not None and not any(
-                v.startswith(":virtual:")
+                vv.startswith(":virtual:")
                 for v in data_metadata.get("objects", {}).values()
+                for vv in (v if isinstance(v, list) else [v])
             ):
                 # We already loaded the data metadata so just use that; note that if any
                 # of the SHAs are marked as virtual, it means we have to fetch the data
@@ -695,8 +696,10 @@ class TaskDataStore(object):
                         if len(shas) == 1 and not self._info[var]["serializer_info"]
                         else ":virtual:"
                         + sha1(
-                            " ".join(shas)
-                            + json.dumps(self._info[var]["serializer_info"])
+                            b" ".join([s.encode("utf-8") for s in shas])
+                            + json.dumps(self._info[var]["serializer_info"]).encode(
+                                "utf-8"
+                            )
                         ).hexdigest()
                     ),
                     type=self._info[var]["encoding"],
@@ -807,7 +810,7 @@ class TaskDataStore(object):
         # was called
         for var, art in flow._orig_artifacts.items():
             art.post_persist(self._info, self._objects)
-            del flow._orig_artifacts[var]
+        flow._orig_artifacts.clear()
 
     @only_if_not_done
     @require_mode("w")

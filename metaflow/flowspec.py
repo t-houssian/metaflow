@@ -253,7 +253,7 @@ class FlowSpec(metaclass=_FlowSpecMeta):
             # For MetaflowArtifact, we extract the representation of it to present to
             # the user but also store the original MetaflowArtifact for later use
             if isinstance(x, MetaflowArtifact):
-                x_repr = x.get_representation()
+                x_repr = x.get_representation(name)
                 self._orig_artifacts[name] = x
             else:
                 x_repr = x
@@ -268,7 +268,7 @@ class FlowSpec(metaclass=_FlowSpecMeta):
 
         if isinstance(value, MetaflowArtifact) and name not in self._orig_artifacts:
             self._orig_artifacts[name] = value
-            super().__setattr__(name, value.get_representation())
+            super().__setattr__(name, value.get_representation(name))
         else:
             super().__setattr__(name, value)
 

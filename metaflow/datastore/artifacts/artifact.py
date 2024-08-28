@@ -19,7 +19,9 @@ class MetaflowArtifact:
     try to take that into account in our future development.
     """
 
-    def pre_persist(self, flow: "FlowSpec", datastore: "TaskDatastore") -> bool:
+    def pre_persist(
+        self, name: str, flow: "FlowSpec", datastore: "TaskDatastore"
+    ) -> bool:
         """
         This method is called before any artifact is persisted to the datastore.
 
@@ -29,6 +31,8 @@ class MetaflowArtifact:
 
         Parameters
         ----------
+        name : str
+            The name of this artifact
         flow : FlowSpec
             The flow that the artifact is a part of
         datastore : TaskDatastore
@@ -107,9 +111,14 @@ class MetaflowArtifact:
         """
         return None
 
-    def get_representation(self) -> Any:
+    def get_representation(self, name: str) -> Any:
         """
         This method is called to determine how the artifact should be represented to the user.
+
+        Parameters
+        ----------
+        name : str
+            The name of this artifact.
 
         Returns
         -------

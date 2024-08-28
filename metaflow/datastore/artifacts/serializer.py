@@ -113,7 +113,7 @@ class ArtifactSerializer:
         bool
             True if this serializer can serialize the object
         """
-        raise NotImplementedError
+        return False
 
     @classmethod
     def can_deserialize(cls, metadata: SerializationMetadata) -> bool:
@@ -132,7 +132,7 @@ class ArtifactSerializer:
             True if this ArtifactSerializer can deserialize the object based on the
             metadata provided
         """
-        raise NotImplementedError
+        return False
 
     @classmethod
     def serialize(cls, obj: Any) -> Tuple[List[SerializedBlob], SerializationMetadata]:
@@ -186,3 +186,17 @@ class ArtifactSerializer:
             The deserialized object
         """
         raise NotImplementedError
+
+
+def register_serializer(serializer: ArtifactSerializer):
+    """
+    Register a new serializer
+
+    Parameters
+    ----------
+    serializer : ArtifactSerializer
+        The serializer to register
+    """
+    from metaflow.plugins import ARTIFACT_SERIALIZERS
+
+    ARTIFACT_SERIALIZERS.append(serializer)

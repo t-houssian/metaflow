@@ -727,8 +727,10 @@ class MetaflowTask(object):
                 for artifact_name, data_artifact in self.flow._orig_artifacts.items():
                     data_artifact.update_value(getattr(self.flow, artifact_name))
 
-                for data_artifact in self.flow._orig_artifacts.values():
-                    data_artifact.pre_persist(self.flow, output)
+                for artifact_name, data_artifact in self.flow._orig_artifacts.items():
+                    data_artifact.pre_persist(
+                        artifact_name, self.flow, self.flow._datastore
+                    )
 
                 output.persist(self.flow)
 
