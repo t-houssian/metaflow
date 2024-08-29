@@ -92,7 +92,7 @@ class SerializerStore(type):
         serializer = super().__new__(cls, name, bases, class_dict)
         if name != "ArtifactSerializer":  # Don't register the base class
             if name in cls._all_serializers:
-                raise ValueError(f"Serializer with name {name} already exists")
+                raise ValueError("Serializer with name %s already exists" % name)
             cls._all_serializers[name] = serializer
         return serializer
 
