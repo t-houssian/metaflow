@@ -100,7 +100,7 @@ class SerializerStore(type):
         try:
             return cls._all_serializers[key]
         except KeyError as e:
-            raise KeyError(f"No serializer with name {key}") from e
+            raise KeyError("No serializer with name %s" % key) from e
 
     def __iter__(cls):
         return iter(cls._all_serializers.items())
