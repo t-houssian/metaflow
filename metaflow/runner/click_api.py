@@ -37,7 +37,7 @@ from metaflow.decorators import add_decorator_options
 from metaflow.exception import MetaflowException
 from metaflow.includefile import FilePathClass
 from metaflow.parameters import JSONTypeClass, flow_context
-from metaflow.user_configs import LocalFileInput
+from metaflow.config_parameters import LocalFileInput
 
 click_to_python_types = {
     StringParamType: str,
